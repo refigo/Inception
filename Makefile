@@ -13,6 +13,10 @@ up:
 down:
 	$(DC) -f $(DC_FILE) down
 
+re:
+	$(DC) -f $(DC_FILE) down
+	$(DC) -f $(DC_FILE) up -d
+
 logs:
 	$(DC) -f $(DC_FILE) logs -f
 
@@ -20,7 +24,7 @@ ps:
 	$(DC) -f $(DC_FILE) ps
 
 clean:
-	$(DC) -f $(DC_FILE) down --remove-orphans
+	$(DC) -f $(DC_FILE) down --rmi all --remove-orphans
 
 fclean:
 	$(DC) -f $(DC_FILE) down -v --rmi all --remove-orphans
