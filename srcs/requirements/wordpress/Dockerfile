@@ -1,5 +1,5 @@
 # Use the official PHP image with FPM and Nginx as the base image
-FROM wordpress:php7.4-fpm
+FROM wordpress:php8.1-fpm
 
 # Install Nginx
 # RUN apt-get update && \
