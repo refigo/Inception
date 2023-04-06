@@ -13,12 +13,12 @@ services:
       MYSQL_USER: Dave
       MYSQL_PASSWORD: Davejjang3#3@
   wordpress:
-    #build: .
-    image: wordpress:latest
+    build: ./requirements/wordpress/.
+    # image: wordpress:latest
     depends_on:
       - db
     volumes:
-      - wp_data:/var/www/html/wp-content
+      - wp_data:/var/www/html
     restart: always
     environment:
       WORDPRESS_DB_HOST: db:3306
@@ -34,7 +34,8 @@ services:
       - 80:80
     restart: always
     volumes:
-      - ./requirements/nginx/tools/nginx.conf:/etc/nginx/conf.d/wordpress.conf:ro
+      - wp_data:/var/www/html
+      # - ./requirements/nginx/tools/nginx.conf:/etc/nginx/conf.d/wordpress.conf:ro
 
 volumes:
   db_data:
