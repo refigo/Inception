@@ -15,6 +15,7 @@ down:
 
 re:
 	$(DC) -f $(DC_FILE) down
+	$(DC) -f $(DC_FILE) build
 	$(DC) -f $(DC_FILE) up -d
 
 logs:
