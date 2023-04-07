@@ -2,16 +2,16 @@ version: '3.8'
 
 services:
   db:
-    #build: .
-    image: mariadb:latest
+    build: ./requirements/mariadb/.
+    # image: mariadb:latest
     volumes:
       - db_data:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootjjangpass5%@4
-      MYSQL_DATABASE: testdb1
-      MYSQL_USER: Dave
-      MYSQL_PASSWORD: Davejjang3#3@
+      MARIADB_ROOT_PASSWORD: rootjjangpass5%@4
+      MARIADB_DATABASE: testdb1
+      MARIADB_USER: Dave
+      MARIADB_PASSWORD: Davejjang3#3@
   wordpress:
     # build: ./requirements/wordpress/.
     image: wordpress:php8.1-fpm
