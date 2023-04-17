@@ -13,8 +13,8 @@ services:
       MARIADB_USER: Dave
       MARIADB_PASSWORD: Davejjang3#3@
   wordpress:
-    # build: ./requirements/wordpress/.
-    image: wordpress:php8.1-fpm
+    build: ./requirements/wordpress/.
+    # image: wordpress:php8.1-fpm
     depends_on:
       - db
     volumes:
