@@ -8,11 +8,8 @@ VOLUME /var/lib/mysql
 
 RUN sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
 
-# COPY ./tools/healthcheck.sh /usr/local/bin/healthcheck.sh
 COPY ./tools/docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
-# ENTRYPOINT ["bash"]
-# CMD ["docker-entrypoint.sh"]
 
-EXPOSE 3306
-# CMD sleep 1000
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# EXPOSE 3306

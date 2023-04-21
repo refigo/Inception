@@ -15,24 +15,24 @@ if [ ! -e /var/www/html/wp-config.php ]; then
 			--dbhost=$WORDPRESS_DB_HOST \
 			--path='/var/www/html' ; do
 		sleep 2
+		echo "Waiting for mariadb..."
 		done
 
 	# Config for admin
 	wp core install --allow-root \
-		--url='localhost' \
-		--title='test_tile' \
-		--admin_user='test_admin_name' \
-		--admin_password='admin_pw' \
-		--admin_email="42.4.mgo@gmail.com" \
+		--url='mgo.42.fr' \
+		--title='The WordPress of mgo' \
+		--admin_user=$WORDPRESS_ADMIN_USER \
+		--admin_password=$WORDPRESS_ADMIN_PW \
+		--admin_email=$WORDPRESS_ADMIN_EMAIL \
 		--path='/var/www/html'
 
 	# Create user
 	wp user create --allow-root \
-		mgo mgo@student.42seoul.kr \
-		--user_pass='mgo_pw' \
+		$WORDPRESS_USER $WORDPRESS_USER_EMAIL \
+		--user_pass=$WORDPRESS_USER_PW \
 		--role=author \
 		--path=/var/www/html
 fi
 
-# service sendmail start
 php-fpm7.3 --nodaemonize
