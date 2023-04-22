@@ -40,9 +40,18 @@ services:
 
 volumes:
     wp_data:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: ./data/wp
     db_data:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: ./data/db
 
 networks:
     inception:
         driver: bridge
-
