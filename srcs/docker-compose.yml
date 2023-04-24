@@ -2,40 +2,56 @@ version: '3.8'
 
 services:
   db:
-    #build: .
-    image: mariadb:latest
+    container_name: db
+    build: ./requirements/mariadb/.
+    restart: always
+    env_file: .env
     volumes:
       - db_data:/var/lib/mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: rootjjangpass5%@4
-      MYSQL_DATABASE: testdb1
-      MYSQL_USER: Dave
-      MYSQL_PASSWORD: Davejjang3#3@
+    networks:
+      - inception
   wordpress:
-    #build: .
-    image: wordpress:latest
+    container_name: wp
+    build: ./requirements/wordpress/.
     depends_on:
       - db
-    volumes:
-      - wp_data:/var/www/html/wp-content
     restart: always
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_NAME: testdb1
-      WORDPRESS_DB_USER: Dave
-      WORDPRESS_DB_PASSWORD: Davejjang3#3@
+    env_file: .env
+    volumes:
+      - wp_data:/var/www/html
+    networks:
+      - inception
   nginx:
-    build: ./requirements/nginx/.
-    # image: nginx:latest
+    container_name: nx
+    build:
+      context: ./requirements/nginx/.
+      args:
+        - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
       - wordpress
     ports:
-      - 80:80
+      - 443:443
     restart: always
+    env_file: .env
     volumes:
-      - ./requirements/nginx/tools/nginx.conf:/etc/nginx/conf.d/wordpress.conf:ro
+      - wp_data:/var/www/html
+    networks:
+      - inception
 
 volumes:
-  db_data:
-  wp_data:
+    wp_data:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: ./data/wp
+    db_data:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: ./data/db
+
+networks:
+    inception:
+        driver: bridge

@@ -1,11 +1,16 @@
 # Makefile for docker compose
 
 DC = docker compose
-DC_DIR = ./srcs/
-DC_FILE = $(DC_DIR)docker-compose.yml
+DC_DIR = ./srcs
+DC_FILE = $(DC_DIR)/docker-compose.yml
 
-build:
-	$(DC) -f $(DC_FILE) build
+VOLM_DIR=./srcs/data
+VOLM_DB=$(VOLM_DIR)/db
+VOLM_WP=$(VOLM_DIR)/wp
+
+all:
+	mkdir -p $(VOLM_DB) $(VOLM_WP)
+	$(DC) -f $(DC_FILE) up -d --build
 
 up:
 	$(DC) -f $(DC_FILE) up -d
@@ -15,6 +20,7 @@ down:
 
 re:
 	$(DC) -f $(DC_FILE) down
+	$(DC) -f $(DC_FILE) build
 	$(DC) -f $(DC_FILE) up -d
 
 logs:
@@ -28,5 +34,6 @@ clean:
 
 fclean:
 	$(DC) -f $(DC_FILE) down -v --rmi all --remove-orphans
+	rm -rf $(VOLM_DIR)
 
-.PHONY: build up down logs ps clean fclean
+.PHONY: all build up down logs ps clean fclean
