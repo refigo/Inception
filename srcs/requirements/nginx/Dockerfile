@@ -2,10 +2,10 @@ FROM debian:buster
 
 ARG DOMAIN_NAME
 
-RUN apt-get update \
-	&& apt-get install nginx openssl dumb-init -y \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& openssl req -x509 -nodes -days 365 \
+RUN apt-get update && \
+	apt-get install nginx openssl dumb-init -y && \
+	rm -rf /var/lib/apt/lists/* && \
+	openssl req -x509 -nodes -days 365 \
 		-subj "/C=KR/ST=ICN\CN=${DOMAIN_NAME}" \
 		-addext "subjectAltName=DNS:${DOMAIN_NAME}" \
 		-newkey rsa:2048 \
