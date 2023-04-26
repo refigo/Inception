@@ -20,5 +20,5 @@ EXPOSE 9000
 
 WORKDIR /var/www/html
 
-ENTRYPOINT [ "/usr/bin/dumb-init", "--" ]
-CMD [ "/bin/bash", "docker-entrypoint.sh" ]
+ENTRYPOINT	[ "/usr/bin/dumb-init", "--" ]
+CMD			[ "/bin/bash", "docker-entrypoint.sh" ]

@@ -36,4 +36,4 @@ if [ ! -e /var/www/html/wp-config.php ]; then
 		--path=/var/www/html
 fi
 
-php-fpm7.3 --nodaemonize
+exec php-fpm7.3 --nodaemonize
