@@ -2,10 +2,11 @@
 
 if [ ! -e /var/www/html/wp-config.php ]; then
 	wget -c https://wordpress.org/latest.tar.gz
-	tar -xvf latest.tar.gz
-	mv ./wordpress/* /var/www/html/
+	tar -xzvf latest.tar.gz
+	mv wordpress/* /var/www/html/
 	chown -R www-data:www-data /var/www/html
-	rm -rf ./latest.tar.gz ./wordpress
+	rmdir wordpress
+	rm latest.tar.gz
 
 	# Connect with db
 	until wp config create --allow-root \
