@@ -42,13 +42,11 @@ volumes:
     wp_data:
       driver: local
       driver_opts:
-        type: none
         o: bind
         device: /home/mgo/data/wp
     db_data:
       driver: local
       driver_opts:
-        type: none
         o: bind
         device: /home/mgo/data/db
 

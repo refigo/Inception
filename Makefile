@@ -1,4 +1,3 @@
-# Makefile for docker compose
 NAME = Inception
 
 DC = docker compose
