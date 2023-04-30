@@ -42,13 +42,15 @@ volumes:
     wp_data:
       driver: local
       driver_opts:
+        type: none
         o: bind
-        device: /home/mgo/data/wp
+        device: ${HOME}/data/wp
     db_data:
       driver: local
       driver_opts:
+        type: none
         o: bind
-        device: /home/mgo/data/db
+        device: ${HOME}/data/db
 
 networks:
     inception:
