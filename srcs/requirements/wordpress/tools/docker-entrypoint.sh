@@ -28,6 +28,17 @@ if [ ! -e /var/www/html/wp-config.php ]; then
 		--admin_email=$WORDPRESS_ADMIN_EMAIL \
 		--path='/var/www/html'
 
+	# Config for Redis plugin
+	wp plugin install redis-cache --activate --path=/var/www/html --allow-root
+	wp plugin update --all --path=/var/www/html --allow-root
+    wp config set "WP_REDIS_HOST" $REDIS_HOST --path=/var/www/html --allow-root
+    wp config set "WP_REDIS_PORT" $REDIS_PORT --path=/var/www/html --allow-root
+	wp config set "WP_REDIS_TIMEOUT" $REDIS_CON_TIMEOUT --path=/var/www/html --allow-root
+	wp config set "WP_REDIS_READ_TIMEOUT" $REDIS_READ_TIMEOUT --path=/var/www/html --allow-root
+	wp config set "WP_REDIS_DATABASE" $REDIS_DB_INDEX --path=/var/www/html --allow-root
+    wp config set "WP_CACHE" true --path=/var/www/html --allow-root
+	wp redis enable --path=/var/www/html --allow-root
+
 	# Create user
 	wp user create --allow-root \
 		$WORDPRESS_USER $WORDPRESS_USER_EMAIL \

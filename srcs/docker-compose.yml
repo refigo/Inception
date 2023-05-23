@@ -37,6 +37,19 @@ services:
       - wp_data:/var/www/html
     networks:
       - inception
+  redis:
+    container_name: redis
+    build:
+      context: requirements/bonus/redis
+    env_file: .env
+    networks:
+      - inception
+    restart: always
+    depends_on:
+      - wordpress
+
+
+
 
 volumes:
     wp_data:
