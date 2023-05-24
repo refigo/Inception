@@ -82,6 +82,22 @@ services:
     restart: always
     ports:
       - 8080:8080
+  vscode:
+    container_name: vscode
+    build:
+      context: ./requirements/bonus/vscode
+      args:
+        - DOMAIN_NAME=${DOMAIN_NAME}
+    env_file: .env
+    ports:
+      - 8443:8443
+    networks:
+      - inception
+    restart: always
+    volumes:
+      - wp_data:/var/www/html
+
+
 
 volumes:
     wp_data:
