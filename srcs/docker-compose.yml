@@ -53,21 +53,25 @@ services:
       args:
         - DOMAIN_NAME=${DOMAIN_NAME}
     env_file: .env
-    # environment:
-    #   - FTP_ROOT_DIR=${FTP_ROOT_DIR}
-    #   - FTP_USER=${FTP_USER}
-    #   - FTP_PWD=${FTP_PWD}
     depends_on:
       - nginx
     restart: always
     ports:
-      - "21:21"
       - "20:20"
+      - "21:21"
       - "$FTP_PORT_MIN-$FTP_PORT_MAX:$FTP_PORT_MIN-$FTP_PORT_MAX"
     volumes:
       - wp_data:/var/www/html
-
-
+  site:
+    build: ./requirements/bonus/site
+    container_name: site
+    networks:
+      - inception
+    depends_on:
+      - nginx
+    restart: always
+    ports:
+      - 3000:3000
 
 volumes:
     wp_data:
