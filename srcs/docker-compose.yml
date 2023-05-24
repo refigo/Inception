@@ -72,6 +72,16 @@ services:
     restart: always
     ports:
       - 3000:3000
+  adminer:
+    build: ./requirements/bonus/adminer
+    container_name: adminer
+    networks:
+      - inception
+    depends_on:
+      - wordpress
+    restart: always
+    ports:
+      - 8080:8080
 
 volumes:
     wp_data:

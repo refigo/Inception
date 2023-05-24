@@ -9,20 +9,10 @@ RUN	apt-get update && \
         php-json \
         curl \
         mariadb-client \
-        # php7.4-fpm \
-        # php7.4-mysql \
-        # php7.4-curl \
-        # php7.4-json \
         dumb-init && \
-    rm -rf /var/lib/apt/lists/*
-
-ADD https://www.adminer.org/latest-mysql.php /var/www/adminer/adminer.php
-
-# RUN set -ex && \
-# 	chmod +x /docker-entrypoint.d/configuration.sh /docker-entrypoint.sh && \
-#     chmod 755 /var/www/adminer/adminer.php && \
-#     adduser -G www-data -D www-data && \
-# 	chown www-data:www-data /var/www/adminer
+    rm -rf /var/lib/apt/lists/* && \
+    sed -i 's/\/run\/php\/php7.3-fpm.sock/0.0.0.0:8080/g' /etc/php/7.3/fpm/pool.d/www.conf && \
+    service php7.3-fpm start
 
 COPY ./tools/docker-entrypoint.sh /usr/local/bin/
 
