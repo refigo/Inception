@@ -97,8 +97,6 @@ services:
     volumes:
       - wp_data:/var/www/html
 
-
-
 volumes:
     wp_data:
       driver: local

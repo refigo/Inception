@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 if [ ! -e /var/www/html/wp-config.php ]; then
 	wget -c https://wordpress.org/latest.tar.gz

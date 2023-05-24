@@ -11,7 +11,6 @@ COPY ./tools/app/package.json ./
 COPY ./tools/app/package-lock.json /app/package-lock.json
 
 RUN	npm install
-# RUN	npm install -g react-scripts
 
 COPY ./tools/app/public ./public
 COPY ./tools/app/src ./src

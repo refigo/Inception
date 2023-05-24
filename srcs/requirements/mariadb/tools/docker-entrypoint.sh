@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 if [ ! -d /var/lib/mysql/$MARIADB_DATABASE ]; then
 	chown -R mysql:mysql /var/lib/mysql
