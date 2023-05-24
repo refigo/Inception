@@ -17,7 +17,7 @@ RUN	apt-get update && \
 
 COPY ./tools/docker-entrypoint.sh /usr/local/bin/
 
-EXPOSE 8443
+EXPOSE 8080
 
 ENTRYPOINT	[ "/usr/bin/dumb-init", "--" ]
 CMD			[ "/bin/bash", "docker-entrypoint.sh" ]

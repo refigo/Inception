@@ -80,8 +80,6 @@ services:
     depends_on:
       - wordpress
     restart: always
-    ports:
-      - 8080:8080
   vscode:
     container_name: vscode
     build:
@@ -90,7 +88,7 @@ services:
         - DOMAIN_NAME=${DOMAIN_NAME}
     env_file: .env
     ports:
-      - 8443:8443
+      - 8080:8080
     networks:
       - inception
     restart: always
