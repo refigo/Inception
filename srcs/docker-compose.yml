@@ -63,8 +63,8 @@ services:
     volumes:
       - wp_data:/var/www/html
   site:
-    build: ./requirements/bonus/site
     container_name: site
+    build: ./requirements/bonus/site
     networks:
       - inception
     depends_on:
@@ -73,8 +73,8 @@ services:
     ports:
       - 3000:3000
   adminer:
-    build: ./requirements/bonus/adminer
     container_name: adminer
+    build: ./requirements/bonus/adminer
     networks:
       - inception
     depends_on:
