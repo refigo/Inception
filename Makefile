@@ -1,18 +1,16 @@
-# Makefile for docker compose
+NAME = Inception
 
 DC = docker compose
-DC_DIR = ./srcs
-DC_FILE = $(DC_DIR)/docker-compose.yml
+DC_FILE = ./srcs/docker-compose.yml
 
-VOLM_DIR=./srcs/data
+VOLM_DIR=${HOME}/data
 VOLM_DB=$(VOLM_DIR)/db
 VOLM_WP=$(VOLM_DIR)/wp
 
-all:
-	mkdir -p $(VOLM_DB) $(VOLM_WP)
-	$(DC) -f $(DC_FILE) up -d --build
+all: $(NAME)
 
-up:
+$(NAME):
+	mkdir -p $(VOLM_DB) $(VOLM_WP)
 	$(DC) -f $(DC_FILE) up -d
 
 down:
@@ -23,17 +21,23 @@ re:
 	$(DC) -f $(DC_FILE) build
 	$(DC) -f $(DC_FILE) up -d
 
+build:
+	$(DC) -f $(DC_FILE) build
+
 logs:
 	$(DC) -f $(DC_FILE) logs -f
 
 ps:
 	$(DC) -f $(DC_FILE) ps
 
+restart:
+	$(DC) -f $(DC_FILE) restart
+
 clean:
 	$(DC) -f $(DC_FILE) down --rmi all --remove-orphans
 
 fclean:
 	$(DC) -f $(DC_FILE) down -v --rmi all --remove-orphans
-	rm -rf $(VOLM_DIR)
+	sudo rm -rf $(VOLM_DIR)
 
-.PHONY: all build up down logs ps clean fclean
+.PHONY: all down re logs ps restart clean fclean

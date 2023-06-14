@@ -1,11 +1,12 @@
-#!bin/bash
+#!/bin/bash
 
 if [ ! -e /var/www/html/wp-config.php ]; then
 	wget -c https://wordpress.org/latest.tar.gz
-	tar -xvf latest.tar.gz
-	mv ./wordpress/* /var/www/html/
+	tar -xzvf latest.tar.gz
+	mv wordpress/* /var/www/html/
 	chown -R www-data:www-data /var/www/html
-	rm -rf ./latest.tar.gz ./wordpress
+	rmdir wordpress
+	rm latest.tar.gz
 
 	# Connect with db
 	until wp config create --allow-root \
@@ -27,6 +28,17 @@ if [ ! -e /var/www/html/wp-config.php ]; then
 		--admin_email=$WORDPRESS_ADMIN_EMAIL \
 		--path='/var/www/html'
 
+	# Config for Redis plugin
+	wp plugin install redis-cache --activate --path=/var/www/html --allow-root
+	wp plugin update --all --path=/var/www/html --allow-root
+    wp config set "WP_REDIS_HOST" $REDIS_HOST --path=/var/www/html --allow-root
+    wp config set "WP_REDIS_PORT" $REDIS_PORT --path=/var/www/html --allow-root
+	wp config set "WP_REDIS_TIMEOUT" $REDIS_CON_TIMEOUT --path=/var/www/html --allow-root
+	wp config set "WP_REDIS_READ_TIMEOUT" $REDIS_READ_TIMEOUT --path=/var/www/html --allow-root
+	wp config set "WP_REDIS_DATABASE" $REDIS_DB_INDEX --path=/var/www/html --allow-root
+    wp config set "WP_CACHE" true --path=/var/www/html --allow-root
+	wp redis enable --path=/var/www/html --allow-root
+
 	# Create user
 	wp user create --allow-root \
 		$WORDPRESS_USER $WORDPRESS_USER_EMAIL \
@@ -35,4 +47,4 @@ if [ ! -e /var/www/html/wp-config.php ]; then
 		--path=/var/www/html
 fi
 
-php-fpm7.3 --nodaemonize
+exec php-fpm7.3 --nodaemonize

@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  db:
-    container_name: db
-    build: ./requirements/mariadb/.
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
     restart: always
     env_file: .env
     volumes:
@@ -11,10 +11,10 @@ services:
     networks:
       - inception
   wordpress:
-    container_name: wp
-    build: ./requirements/wordpress/.
+    container_name: wordpress
+    build: ./requirements/wordpress
     depends_on:
-      - db
+      - mariadb
     restart: always
     env_file: .env
     volumes:
@@ -22,9 +22,9 @@ services:
     networks:
       - inception
   nginx:
-    container_name: nx
+    container_name: nginx
     build:
-      context: ./requirements/nginx/.
+      context: ./requirements/nginx
       args:
         - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
@@ -37,6 +37,63 @@ services:
       - wp_data:/var/www/html
     networks:
       - inception
+  redis:
+    container_name: redis
+    build: ./requirements/bonus/redis
+    env_file: .env
+    networks:
+      - inception
+    restart: always
+    depends_on:
+      - wordpress
+  ftp:
+    container_name: ftp
+    build: 
+      context: ./requirements/bonus/ftp
+      args:
+        - DOMAIN_NAME=${DOMAIN_NAME}
+    env_file: .env
+    depends_on:
+      - nginx
+    restart: always
+    ports:
+      - "20:20"
+      - "21:21"
+      - "$FTP_PORT_MIN-$FTP_PORT_MAX:$FTP_PORT_MIN-$FTP_PORT_MAX"
+    volumes:
+      - wp_data:/var/www/html
+  site:
+    container_name: site
+    build: ./requirements/bonus/site
+    networks:
+      - inception
+    depends_on:
+      - nginx
+    restart: always
+    ports:
+      - 3000:3000
+  adminer:
+    container_name: adminer
+    build: ./requirements/bonus/adminer
+    networks:
+      - inception
+    depends_on:
+      - wordpress
+    restart: always
+  vscode:
+    container_name: vscode
+    build:
+      context: ./requirements/bonus/vscode
+      args:
+        - DOMAIN_NAME=${DOMAIN_NAME}
+    env_file: .env
+    ports:
+      - 8080:8080
+    networks:
+      - inception
+    restart: always
+    volumes:
+      - wp_data:/var/www/html
 
 volumes:
     wp_data:
@@ -44,13 +101,13 @@ volumes:
       driver_opts:
         type: none
         o: bind
-        device: ./data/wp
+        device: ${HOME}/data/wp
     db_data:
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/db
+        device: ${HOME}/data/db
 
 networks:
     inception:
